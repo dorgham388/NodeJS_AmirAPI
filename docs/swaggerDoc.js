@@ -41,6 +41,20 @@ const options = {
           xml: {
             name: "User"
           }
+        },
+        authObject: {
+          type: "object",
+          properties: {
+            email: {
+              type: "string"
+            },
+            password: {
+              type: "string"
+            }
+          },
+          xml: {
+            name: "authObject"
+          }
         }
       }
     },
@@ -51,7 +65,7 @@ const options = {
       }
     ]
   },
-  apis: ["./routes/*.js"]
+  apis: ["./routes/*/*.js"]
 };
 
 const specs = swaggerJsoc(options);

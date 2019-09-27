@@ -19,7 +19,8 @@ const userSchema = mongoose.Schema({
   },
   permissionLevel: {
     type: Number,
-    required: true
+    required: true,
+    default: 1
   }
 });
 
@@ -27,7 +28,7 @@ const User = mongoose.model("Users", userSchema);
 //-------------------------------------------------------
 exports.createUser = userData => {
   const user = new User(userData);
-  return user.save();
+  return user.save().catch(e => console.log(e.message));
 };
 //-------------------------------------------------------
 exports.findById = id => {
@@ -39,17 +40,32 @@ exports.findById = id => {
   });
 };
 //-------------------------------------------------------
+exports.findByEmail = email => {
+  return new Promise((resolve, reject) => {
+    User.find({email: email})
+      .exec(function(err, user) {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(user);
+        }
+      });
+  });
+};
+//-------------------------------------------------------
 exports.patchUser = (id, userData) => {
   return new Promise((resolve, reject) => {
     User.findById(id, function(err, user) {
       if (err) reject(err);
-      for (let i in userData) {
-        user[i] = userData[i];
+      else {
+        for (let i in userData) {
+          user[i] = userData[i];
+        }
+        user.save(function(err, updatedUser) {
+          if (err) return reject(err);
+          resolve(updatedUser);
+        });
       }
-      user.save(function(err, updatedUser) {
-        if (err) return reject(err);
-        resolve(updatedUser);
-      });
     });
   });
 };
@@ -71,7 +87,7 @@ exports.list = (perPage, page) => {
 //-------------------------------------------------------
 exports.removeById = userId => {
   return new Promise((resolve, reject) => {
-    User.remove({ _id: userId }, err => {
+    User.deleteOne({ _id: userId }, err => {
       if (err) {
         reject(err);
       } else {

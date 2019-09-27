@@ -5,7 +5,7 @@ var app     = express();
 var port    =   process.env.PORT || 3000;
 var { mongoose } = require("./database/mongoose");
 var bodyParser = require("body-parser");
-const usersRouter = require('./routes/users.router')
+const usersRouter = require('./routes/usersRoutes/users.router')
 const swaggerDoc = require('./docs/swaggerDoc')
 // ==============================================
 app.use(bodyParser.json());
