@@ -27,6 +27,7 @@ const initializePostRoutes = app => {
    */
 
   app.post("/users/create", [
+    ValidationMiddleware.validateRegisterInput,
     UsersController.insert
   ]);
 

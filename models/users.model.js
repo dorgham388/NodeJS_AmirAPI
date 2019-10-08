@@ -1,26 +1,79 @@
 var mongoose = require("mongoose");
 
-const userSchema = mongoose.Schema({
+const userStatusSchema = mongoose.Schema({
+  status: {
+    type: String
+    // required: true
+  },
+  professionalSituation: {
+    type: String
+  },
+  Profession: {
+    type: String
+  }
+});
+const userAdressSchema = mongoose.Schema({
+  cp: {
+    type: Number
+  },
+  city: {
+    type: String
+  },
+  street: {
+    type: String
+  },
+  address: {
+    type: String
+    // required: true
+  }
+});
+const userIdentitySchema = mongoose.Schema({
   firstName: {
-    type: String,
-    required: true
+    type: String
+    // required: true
   },
   lastName: {
-    type: String,
-    required: true
+    type: String
   },
+  phone: {
+    type: String
+    // required: true
+  },
+  gender: {
+    type: String
+  },
+  birthDate: {
+    type: String
+  },
+  Biography: {
+    type: String
+  }
+});
+const userSchema = mongoose.Schema({
   email: {
-    type: String,
-    required: true
+    type: String
+    // required: true
   },
   password: {
-    type: String,
-    required: true
+    type: String
+    // required: true
+  },
+  shouldReceiveInformations: {
+    type: Boolean,
+    default: false
   },
   permissionLevel: {
     type: Number,
-    required: true,
     default: 1
+  },
+  userIdentity: {
+    type: userIdentitySchema
+  },
+  userAdress: {
+    type: userAdressSchema
+  },
+  userStatus: {
+    type: userStatusSchema
   }
 });
 
@@ -42,14 +95,13 @@ exports.findById = id => {
 //-------------------------------------------------------
 exports.findByEmail = email => {
   return new Promise((resolve, reject) => {
-    User.find({email: email})
-      .exec(function(err, user) {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(user);
-        }
-      });
+    User.find({ email: email }).exec(function(err, user) {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(user);
+      }
+    });
   });
 };
 //-------------------------------------------------------

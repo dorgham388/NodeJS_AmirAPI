@@ -10,22 +10,21 @@ exports.insert = (req, res) => {
     .digest("base64");
   req.body.password = salt + "$" + hash;
   // req.body.permissionLevel = 1;
-  UserModel.createUser(req.body)
-    .then(result => {
-      (result != undefined)?
-      res.status(201).send({
-        code: 201,
-        status: "success",
-        message: "user created",
-        data: result
-      }):
-      res.status(400).send({
-        code: 400,
-        status: "error",
-        message: "Invalid user object",
-      })
-      //{ id: result._id }
-    });
+  UserModel.createUser(req.body).then(result => {
+    result != undefined
+      ? res.status(201).send({
+          code: 201,
+          status: "success",
+          message: "user created",
+          data: result
+        })
+      : res.status(400).send({
+          code: 400,
+          status: "error",
+          message: "Invalid user object"
+        });
+    //{ id: result._id }
+  });
 };
 //-------------------------------------------------------------
 // Fetching by Id
@@ -98,7 +97,7 @@ exports.removeById = (req, res) => {
         status: "success",
         message: "user deleted"
       });
-   })
+    })
     .catch(() =>
       res.status(404).send("User not found, retry with a valid userId.")
     );
